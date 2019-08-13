@@ -59,13 +59,8 @@
         $(".box").removeClass("selected");
         if (!$(this).is(":empty")) {
             $(this).addClass("selected");
-            console.log(this.innerHTML);
             movementlogic(this.id, this.innerHTML);
-
-
         }
-        
-
     });
 
     $(".box").each(function () {
@@ -74,13 +69,33 @@
         }
     });
 });
+var chessPieces = {
+    'white': {
+        'king': '&#9812;',
+        'queen': '&#9813;',
+        'rook': '&#9814;',
+        'bishop': '&#9815;',
+        'knight': '&#9816;',
+        'pawn': '&#9817;'
+    },
+    'black': {
+        'king': '&#9818;',
+        'queen': '&#9819;',
+        'rook': '&#9820;',
+        'bishop': '&#9821;',
+        'knight': '&#9822;',
+        'pawn': '&#9823;'
+    }
+};
 
 function movementlogic(idposition, text) {
-    
+    var textencode = unicodeToChar(text);
+    console.log(textencode);
+    console.log(chessPieces.black.pawn);
     switch (text)
     {
-        default:
-        case '&#9823;':
+        case chessPieces.black.pawn:
+            console.log("successo!");
             var arrayPosition = idposition.split("-");
             console.log(arrayPosition[0]+1);
             var rowPosition = arrayPosition[1] + 1;
@@ -88,5 +103,12 @@ function movementlogic(idposition, text) {
             break;
     }
 
+}
+
+function unicodeToChar(text) {
+    return text.replace(/\\u[\dA-F]{4}/gi,
+        function (match) {
+            return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+        });
 }
 
