@@ -6,7 +6,7 @@ namespace ServerScacchi
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            SoketServer.StartListening();
         }
     }
 }
