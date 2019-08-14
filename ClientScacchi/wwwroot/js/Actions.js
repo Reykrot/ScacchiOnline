@@ -1,40 +1,40 @@
 ﻿$(document).ready(function () {
 
-    $("#box-1-1").append(chessPieces.black.rook).addClass("blackrook");
-    $("#box-1-2").append(chessPieces.black.knight).addClass("blackknight");
-    $("#box-1-3").append(chessPieces.black.bishop).addClass("blackbishop");
-    $("#box-1-4").append(chessPieces.black.queen).addClass("blackqueen");
-    $("#box-1-5").append(chessPieces.black.king).addClass("blackking");
-    $("#box-1-6").append(chessPieces.black.bishop).addClass("blackbishop");
-    $("#box-1-7").append(chessPieces.black.knight).addClass("blackknight");
-    $("#box-1-8").append(chessPieces.black.rook).addClass("blackrook");
+    $("#box-1-1").append(chessPieces.black.rook).addClass("blackrook").addClass("blackChess");
+    $("#box-1-2").append(chessPieces.black.knight).addClass("blackknight").addClass("blackChess");
+    $("#box-1-3").append(chessPieces.black.bishop).addClass("blackbishop").addClass("blackChess");
+    $("#box-1-4").append(chessPieces.black.queen).addClass("blackqueen").addClass("blackChess");
+    $("#box-1-5").append(chessPieces.black.king).addClass("blackking").addClass("blackChess");
+    $("#box-1-6").append(chessPieces.black.bishop).addClass("blackbishop").addClass("blackChess");
+    $("#box-1-7").append(chessPieces.black.knight).addClass("blackknight").addClass("blackChess");
+    $("#box-1-8").append(chessPieces.black.rook).addClass("blackrook").addClass("blackChess");
 
-    $("#box-2-1").append(chessPieces.black.pawn).addClass("blackpawn");
-    $("#box-2-2").append(chessPieces.black.pawn).addClass("blackpawn");
-    $("#box-2-3").append(chessPieces.black.pawn).addClass("blackpawn");
-    $("#box-2-4").append(chessPieces.black.pawn).addClass("blackpawn");
-    $("#box-2-5").append(chessPieces.black.pawn).addClass("blackpawn");
-    $("#box-2-6").append(chessPieces.black.pawn).addClass("blackpawn");
-    $("#box-2-7").append(chessPieces.black.pawn).addClass("blackpawn");
-    $("#box-2-8").append(chessPieces.black.pawn).addClass("blackpawn");
+    $("#box-2-1").append(chessPieces.black.pawn).addClass("blackpawn").addClass("blackChess");
+    $("#box-2-2").append(chessPieces.black.pawn).addClass("blackpawn").addClass("blackChess");
+    $("#box-2-3").append(chessPieces.black.pawn).addClass("blackpawn").addClass("blackChess");
+    $("#box-2-4").append(chessPieces.black.pawn).addClass("blackpawn").addClass("blackChess");
+    $("#box-2-5").append(chessPieces.black.pawn).addClass("blackpawn").addClass("blackChess");
+    $("#box-2-6").append(chessPieces.black.pawn).addClass("blackpawn").addClass("blackChess");
+    $("#box-2-7").append(chessPieces.black.pawn).addClass("blackpawn").addClass("blackChess");
+    $("#box-2-8").append(chessPieces.black.pawn).addClass("blackpawn").addClass("blackChess");
 
-    $("#box-8-1").append(chessPieces.white.rook).addClass("whiterook");
-    $("#box-8-2").append(chessPieces.white.knight).addClass("whiteknight");
-    $("#box-8-3").append(chessPieces.white.bishop).addClass("whitebishop");
-    $("#box-8-4").append(chessPieces.white.queen).addClass("whitequeen");
-    $("#box-8-5").append(chessPieces.white.king).addClass("whiteking");
-    $("#box-8-6").append(chessPieces.white.bishop).addClass("whitebishop");
-    $("#box-8-7").append(chessPieces.white.knight).addClass("whiteknight");
-    $("#box-8-8").append(chessPieces.white.rook).addClass("whiterook");
+    $("#box-8-1").append(chessPieces.white.rook).addClass("whiterook").addClass("whiteChess");
+    $("#box-8-2").append(chessPieces.white.knight).addClass("whiteknight").addClass("whiteChess");
+    $("#box-8-3").append(chessPieces.white.bishop).addClass("whitebishop").addClass("whiteChess");
+    $("#box-8-4").append(chessPieces.white.queen).addClass("whitequeen").addClass("whiteChess");
+    $("#box-8-5").append(chessPieces.white.king).addClass("whiteking").addClass("whiteChess");
+    $("#box-8-6").append(chessPieces.white.bishop).addClass("whitebishop").addClass("whiteChess");
+    $("#box-8-7").append(chessPieces.white.knight).addClass("whiteknight").addClass("whiteChess");
+    $("#box-8-8").append(chessPieces.white.rook).addClass("whiterook").addClass("whiteChess");
 
-    $("#box-7-1").append(chessPieces.white.pawn).addClass("whitepawn");
-    $("#box-7-2").append(chessPieces.white.pawn).addClass("whitepawn");
-    $("#box-7-3").append(chessPieces.white.pawn).addClass("whitepawn");
-    $("#box-7-4").append(chessPieces.white.pawn).addClass("whitepawn");
-    $("#box-7-5").append(chessPieces.white.pawn).addClass("whitepawn");
-    $("#box-7-6").append(chessPieces.white.pawn).addClass("whitepawn");
-    $("#box-7-7").append(chessPieces.white.pawn).addClass("whitepawn");
-    $("#box-7-8").append(chessPieces.white.pawn).addClass("whitepawn");
+    $("#box-7-1").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
+    $("#box-7-2").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
+    $("#box-7-3").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
+    $("#box-7-4").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
+    $("#box-7-5").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
+    $("#box-7-6").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
+    $("#box-7-7").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
+    $("#box-7-8").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
 
     $(".box").click(function () {
         $(".box").removeClass("selected");
@@ -109,7 +109,8 @@ function movementlogic(idposition, classlist) {
             queenMovement(idposition);
             break;
     }
-
+    getEdible();
+    removeMove();
 }
 //#region ------ mosse dei neri -----
 function blackPawnMovement(idposition) {
@@ -127,7 +128,6 @@ function blackPawnMovement(idposition) {
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
     }
-    removeMove();
 
 }
 //#endregion
@@ -162,7 +162,6 @@ function rookMovement(idposition) {
     for (i = 1; i < 9; i++) {
         $("#box" + "-" + rowposition + "-" + i).addClass("move");
     }
-    removeMove();
 }
 function knightMovement(idposition) {
     var arrayPosition = idposition.split("-");
@@ -177,7 +176,6 @@ function knightMovement(idposition) {
     $("#box" + "-" + (rowposition - 1) + "-" + (columnposition + 2)).addClass("move");
     $("#box" + "-" + (rowposition + 1) + "-" + (columnposition - 2)).addClass("move");
     $("#box" + "-" + (rowposition - 1) + "-" + (columnposition - 2)).addClass("move");
-    removeMove();
 }
 function bishopMovement(idposition) {
     var arrayPosition = idposition.split("-");
@@ -190,7 +188,6 @@ function bishopMovement(idposition) {
         $("#box" + "-" + (rowposition - i) + "-" + (columnposition + i)).addClass("move");
         $("#box" + "-" + (rowposition - i) + "-" + (columnposition - i)).addClass("move");
     }
-    removeMove();
 }
 function kingMovement(idposition) {
     var arrayPosition = idposition.split("-");
@@ -205,7 +202,6 @@ function kingMovement(idposition) {
     $("#box" + "-" + (rowposition - 1) + "-" + (columnposition - 1)).addClass("move");
     $("#box" + "-" + (rowposition + 1) + "-" + (columnposition - 1)).addClass("move");
     $("#box" + "-" + (rowposition - 1) + "-" + (columnposition + 1)).addClass("move");
-    removeMove();
 }
 function queenMovement(idposition) {
     var arrayPosition = idposition.split("-");
@@ -235,7 +231,6 @@ function queenMovement(idposition) {
     for (i = 1; i < 9; i++) {
         $("#box" + "-" + rowposition + "-" + i).addClass("move");
     }
-    removeMove();
 }
 //#endregion
 
@@ -246,5 +241,29 @@ function removeMove() {
             $(this).removeClass("move");
         }
     });
+}
+function getEdible() {
+    $(".box").removeClass("edibile");
+    $(".box").each(function () {
+        if ($(this).hasClass("selected") & $(this).hasClass("whiteChess")) {
+            $(".box").each(function () {
+                if ($(this).hasClass("blackpawn") | $(this).hasClass("blackrook") | $(this).hasClass("blackknight") | $(this).hasClass("blackbishop") | $(this).hasClass("blackking") | $(this).hasClass("blackqueen")) {
+                    if ($(this).hasClass("move")) {
+                        $(this).addClass("edibile");
+                        $(this).removeClass("move");
+                    }
+                }
+            });
+        } else if ($(this).hasClass("selected") & $(this).hasClass("blackChess")) {
+            $(".box").each(function () {
+                if ($(this).hasClass("whitepawn") | $(this).hasClass("whiterook") | $(this).hasClass("whiteknight") | $(this).hasClass("whitebishop") | $(this).hasClass("whiteking") | $(this).hasClass("whitequeen")) {
+                    if ($(this).hasClass("move")) {
+                        $(this).addClass("edibile");
+                        $(this).removeClass("move");
+                    }
+                }
+            });
+        }
 
+    });
 }
