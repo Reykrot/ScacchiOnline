@@ -75,53 +75,176 @@ function movementlogic(idposition, classlist) {
         case "blackpawn":
             blackPawnMovement(idposition);
             break;
+        case "blackrook":
+            rookMovement(idposition);
+            break;
+        case "blackknight":
+            knightMovement(idposition);
+            break;
+        case "blackbishop":
+            bishopMovement(idposition);
+            break;
+        case "blackking":
+            kingMovement(idposition);
+            break;
+        case "blackqueen":
+            queenMovement(idposition);
+            break;
         case "whitepawn":
             whitePawnMovement(idposition);
+            break;
+        case "whiterook":
+            rookMovement(idposition);
+            break;
+        case "whiteknight":
+            knightMovement(idposition);
+            break;
+        case "whitebishop":
+            bishopMovement(idposition);
+            break;
+        case "whiteking":
+            kingMovement(idposition);
+            break;
+        case "whitequeen":
+            queenMovement(idposition);
             break;
     }
 
 }
-
-function unicodeToChar(text) {
-    return text.replace(/\\u[\dA-F]{4}/gi,
-        function (match) {
-            return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
-        });
-}
-
-
+//#region ------ mosse dei neri -----
 function blackPawnMovement(idposition) {
     var arrayPosition = idposition.split("-");
-    var columnposition = parseInt(arrayPosition[2])
+    var columnposition = parseInt(arrayPosition[2]);
 
-    if (parseInt(arrayPosition[1], 10) == 2) {
+    if (parseInt(arrayPosition[1], 10) === 2) {
         var rowmoventposition = parseInt(arrayPosition[1], 10) + parseInt(2, 10);
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
-        var rowmoventposition = parseInt(arrayPosition[1], 10) + parseInt(1, 10);
+        rowmoventposition = parseInt(arrayPosition[1], 10) + parseInt(1, 10);
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
     } else {
-        var rowmoventposition = parseInt(arrayPosition[1], 10) + parseInt(1, 10);
+        rowmoventposition = parseInt(arrayPosition[1], 10) + parseInt(1, 10);
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
     }
+    removeMove();
 
 }
-
+//#endregion
+//#region ------ mosse dei bianchi ------
 function whitePawnMovement(idposition) {
     var arrayPosition = idposition.split("-");
-    var columnposition = parseInt(arrayPosition[2])
-    if (parseInt(arrayPosition[1], 10) == 7) {
+    var columnposition = parseInt(arrayPosition[2]);
+    if (parseInt(arrayPosition[1], 10) === 7) {
         var rowmoventposition = parseInt(arrayPosition[1], 10) - parseInt(2, 10);
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
-        var rowmoventposition = parseInt(arrayPosition[1], 10) - parseInt(1, 10);
+        rowmoventposition = parseInt(arrayPosition[1], 10) - parseInt(1, 10);
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
     } else {
-        var rowmoventposition = parseInt(arrayPosition[1], 10) - parseInt(1, 10);
+        rowmoventposition = parseInt(arrayPosition[1], 10) - parseInt(1, 10);
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
     }
+    removeMove();
 
 }
+//#endregion
+//#region ---- mosse di tutti ---
+function rookMovement(idposition) {
+    var arrayPosition = idposition.split("-");
+    var columnposition = parseInt(arrayPosition[2]);
+    var rowposition = parseInt(arrayPosition[1]);
+    $(".box").removeClass("move");
+    for (var i = 1; i < 9; i++) {
+        $("#box" + "-" + i + "-" + columnposition).addClass("move");
+    }
+    for (i = 1; i < 9; i++) {
+        $("#box" + "-" + rowposition + "-" + i).addClass("move");
+    }
+    removeMove();
+}
+function knightMovement(idposition) {
+    var arrayPosition = idposition.split("-");
+    var columnposition = parseInt(arrayPosition[2]);
+    var rowposition = parseInt(arrayPosition[1]);
+    $(".box").removeClass("move");
+    $("#box" + "-" + (rowposition + 2) + "-" + (columnposition + 1)).addClass("move");
+    $("#box" + "-" + (rowposition + 2) + "-" + (columnposition - 1)).addClass("move");
+    $("#box" + "-" + (rowposition - 2) + "-" + (columnposition + 1)).addClass("move");
+    $("#box" + "-" + (rowposition - 2) + "-" + (columnposition - 1)).addClass("move");
+    $("#box" + "-" + (rowposition + 1) + "-" + (columnposition + 2)).addClass("move");
+    $("#box" + "-" + (rowposition - 1) + "-" + (columnposition + 2)).addClass("move");
+    $("#box" + "-" + (rowposition + 1) + "-" + (columnposition - 2)).addClass("move");
+    $("#box" + "-" + (rowposition - 1) + "-" + (columnposition - 2)).addClass("move");
+    removeMove();
+}
+function bishopMovement(idposition) {
+    var arrayPosition = idposition.split("-");
+    var columnposition = parseInt(arrayPosition[2]);
+    var rowposition = parseInt(arrayPosition[1]);
+    $(".box").removeClass("move");
+    for (i = 1; i < 9; i++) {
+        $("#box" + "-" + (rowposition + i) + "-" + (columnposition + i)).addClass("move");
+        $("#box" + "-" + (rowposition + i) + "-" + (columnposition - i)).addClass("move");
+        $("#box" + "-" + (rowposition - i) + "-" + (columnposition + i)).addClass("move");
+        $("#box" + "-" + (rowposition - i) + "-" + (columnposition - i)).addClass("move");
+    }
+    removeMove();
+}
+function kingMovement(idposition) {
+    var arrayPosition = idposition.split("-");
+    var columnposition = parseInt(arrayPosition[2]);
+    var rowposition = parseInt(arrayPosition[1]);
+    $(".box").removeClass("move");
+    $("#box" + "-" + (rowposition + 1) + "-" + columnposition).addClass("move");
+    $("#box" + "-" + rowposition + "-" + (columnposition + 1)).addClass("move");
+    $("#box" + "-" + (rowposition - 1) + "-" + columnposition).addClass("move");
+    $("#box" + "-" + rowposition + "-" + (columnposition - 1)).addClass("move");
+    $("#box" + "-" + (rowposition + 1) + "-" + (columnposition + 1)).addClass("move");
+    $("#box" + "-" + (rowposition - 1) + "-" + (columnposition - 1)).addClass("move");
+    $("#box" + "-" + (rowposition + 1) + "-" + (columnposition - 1)).addClass("move");
+    $("#box" + "-" + (rowposition - 1) + "-" + (columnposition + 1)).addClass("move");
+    removeMove();
+}
+function queenMovement(idposition) {
+    var arrayPosition = idposition.split("-");
+    var columnposition = parseInt(arrayPosition[2]);
+    var rowposition = parseInt(arrayPosition[1]);
+    $(".box").removeClass("move");
+    //kingmove
+    $("#box" + "-" + (rowposition + 1) + "-" + columnposition).addClass("move");
+    $("#box" + "-" + rowposition + "-" + (columnposition + 1)).addClass("move");
+    $("#box" + "-" + (rowposition - 1) + "-" + columnposition).addClass("move");
+    $("#box" + "-" + rowposition + "-" + (columnposition - 1)).addClass("move");
+    $("#box" + "-" + (rowposition + 1) + "-" + (columnposition + 1)).addClass("move");
+    $("#box" + "-" + (rowposition - 1) + "-" + (columnposition - 1)).addClass("move");
+    $("#box" + "-" + (rowposition + 1) + "-" + (columnposition - 1)).addClass("move");
+    $("#box" + "-" + (rowposition - 1) + "-" + (columnposition + 1)).addClass("move");
+    //bhishopmove
+    for (i = 1; i < 9; i++) {
+        $("#box" + "-" + (rowposition + i) + "-" + (columnposition + i)).addClass("move");
+        $("#box" + "-" + (rowposition + i) + "-" + (columnposition - i)).addClass("move");
+        $("#box" + "-" + (rowposition - i) + "-" + (columnposition + i)).addClass("move");
+        $("#box" + "-" + (rowposition - i) + "-" + (columnposition - i)).addClass("move");
+    }
+    //rookmovement
+    for (var i = 1; i < 9; i++) {
+        $("#box" + "-" + i + "-" + columnposition).addClass("move");
+    }
+    for (i = 1; i < 9; i++) {
+        $("#box" + "-" + rowposition + "-" + i).addClass("move");
+    }
+    removeMove();
+}
+//#endregion
 
+function removeMove() {
+
+    $(".box").each(function () {
+        if (!$(this).is(":empty")) {
+            $(this).removeClass("move");
+        }
+    });
+
+}
