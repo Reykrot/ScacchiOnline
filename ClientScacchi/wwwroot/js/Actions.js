@@ -136,7 +136,7 @@ function whitePawnMovement(idposition) {
     var arrayPosition = idposition.split("-");
     var columnposition = parseInt(arrayPosition[2]);
     if (parseInt(arrayPosition[1], 10) === 7) {
-         var rowmoventposition = parseInt(arrayPosition[1], 10) - parseInt(2, 10);
+        var rowmoventposition = parseInt(arrayPosition[1], 10) - parseInt(2, 10);
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
         rowmoventposition = parseInt(arrayPosition[1], 10) - parseInt(1, 10);
