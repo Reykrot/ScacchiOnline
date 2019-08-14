@@ -686,23 +686,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Reykrot\\.nuget\\packages\\": {},
+    "C:\\Users\\g.morleschi\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Reykrot\\Source\\Repos\\ScacchiOnline\\ServerScacchi\\ServerScacchi.csproj",
+      "projectUniqueName": "C:\\Users\\g.morleschi\\source\\repos\\ScacchiOnline\\ServerScacchi\\ServerScacchi.csproj",
       "projectName": "ServerScacchi",
-      "projectPath": "C:\\Users\\Reykrot\\Source\\Repos\\ScacchiOnline\\ServerScacchi\\ServerScacchi.csproj",
-      "packagesPath": "C:\\Users\\Reykrot\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Reykrot\\Source\\Repos\\ScacchiOnline\\ServerScacchi\\obj\\",
+      "projectPath": "C:\\Users\\g.morleschi\\source\\repos\\ScacchiOnline\\ServerScacchi\\ServerScacchi.csproj",
+      "packagesPath": "C:\\Users\\g.morleschi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\g.morleschi\\source\\repos\\ScacchiOnline\\ServerScacchi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Reykrot\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\g.morleschi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -710,6 +710,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\g.morleschi\\Vetrya S.p.A\\Alessandro Rapiti - Repository\\Nuget": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

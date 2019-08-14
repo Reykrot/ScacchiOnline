@@ -39,7 +39,12 @@
 .withChess {
     cursor: pointer;
 }
+.whiteChess{
 
+}
+.blackChess{
+
+}
 .move {
     box-shadow: inset 0 0 10px #00FF9E;
 }
@@ -76,4 +81,7 @@
 }
 .whiteking{
 
+}
+.edibile {
+    box-shadow: inset 0 0 10px #ff0000;
 }
