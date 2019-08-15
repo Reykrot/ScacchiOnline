@@ -36,19 +36,37 @@
     $("#box-7-7").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
     $("#box-7-8").append(chessPieces.white.pawn).addClass("whitepawn").addClass("whiteChess");
 
+    var oldclick = "";
+
     $(".box").click(function () {
-        $(".box").removeClass("selected");
-        if (!$(this).is(":empty")) {
-            $(this).addClass("selected");
-            movementlogic(this.id, this.classList);
+        if ($(this).hasClass("move")) {
+            this.classList = oldclick.classList;
+            this.innerHTML = oldclick.innerHTML;
+            $(".box").removeClass("selected");
+            $(".box").removeClass("move");
+            $(".box").removeClass("edibile");
+            oldclick.innerHTML = "";
+        } else {
+            $(".box").removeClass("selected");
+            if (!$(this).is(":empty")) {
+                $(this).addClass("selected");
+                movementlogic(this.id, this.classList);
+                oldclick = this;
+            }
         }
+
+
     });
 
     $(".box").each(function () {
         if (!$(this).is(":empty")) {
             $(this).addClass("withChess");
+        } else {
+            $(this).removeClass("withChess");
         }
     });
+
+
 });
 var chessPieces = {
     'white': {
@@ -67,10 +85,11 @@ var chessPieces = {
         'knight': '&#9822;',
         'pawn': '&#9823;'
     }
+
 };
 
 function movementlogic(idposition, classlist) {
-
+  
     switch (classlist[2]) {
         case "blackpawn":
             blackPawnMovement(idposition);
@@ -128,7 +147,6 @@ function blackPawnMovement(idposition) {
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
     }
-
 }
 //#endregion
 //#region ------ mosse dei bianchi ------
@@ -146,8 +164,6 @@ function whitePawnMovement(idposition) {
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
     }
-    removeMove();
-
 }
 //#endregion
 //#region ---- mosse di tutti ---
@@ -265,5 +281,8 @@ function getEdible() {
             });
         }
 
+
     });
 }
+
+
