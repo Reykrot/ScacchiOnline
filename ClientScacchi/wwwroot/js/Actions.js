@@ -42,10 +42,12 @@
         if ($(this).hasClass("move")) {
             this.classList = oldclick.classList;
             this.innerHTML = oldclick.innerHTML;
+            oldclick.className = "";
+            oldclick.innerHTML = "";
             $(".box").removeClass("selected");
             $(".box").removeClass("move");
             $(".box").removeClass("edibile");
-            oldclick.innerHTML = "";
+            $(oldclick).addClass("box");
         } else {
             $(".box").removeClass("selected");
             if (!$(this).is(":empty")) {
@@ -89,8 +91,7 @@ var chessPieces = {
 };
 
 function movementlogic(idposition, classlist) {
-  
-    switch (classlist[2]) {
+    switch (classlist[1]) {
         case "blackpawn":
             blackPawnMovement(idposition);
             break;
@@ -128,8 +129,8 @@ function movementlogic(idposition, classlist) {
             queenMovement(idposition);
             break;
     }
-    getEdible();
-    removeMove();
+    
+    removeMove(idposition);
 }
 //#region ------ mosse dei neri -----
 function blackPawnMovement(idposition) {
@@ -147,6 +148,7 @@ function blackPawnMovement(idposition) {
         $(".box").removeClass("move");
         $("#box" + "-" + rowmoventposition + "-" + columnposition).addClass("move");
     }
+
 }
 //#endregion
 //#region ------ mosse dei bianchi ------
@@ -250,39 +252,103 @@ function queenMovement(idposition) {
 }
 //#endregion
 
-function removeMove() {
+function removeMove(idposition) {
+    var arrayPosition = idposition.split("-");
+    var columnposition = parseInt(arrayPosition[2]);
+    var rowposition = parseInt(arrayPosition[1]);
+    $("#box" + "-" + rowposition + "-" + columnposition).removeClass("move");
+    var index = true;
+    //scorrimento verticale in alto
+    for (i = 1; i < 9; i++) {
+        if (!$("#box" + "-" + (rowposition + i) + "-" + columnposition).hasClass("withChess") & index) {
+            continue;
+        } else {
+            index = false;
+            $("#box" + "-" + (rowposition + i) + "-" + columnposition).removeClass("move");
 
-    $(".box").each(function () {
-        if (!$(this).is(":empty")) {
-            $(this).removeClass("move");
         }
-    });
+    }
+    index = true;
+
+       //scorrimento verticale in basso
+    for (i = 1; i < 9; i++) {
+        if (!$("#box" + "-" + (rowposition - i) + "-" + columnposition).hasClass("withChess") & index) {
+            continue;
+        } else {
+            index = false;
+            $("#box" + "-" + (rowposition - i) + "-" + columnposition).removeClass("move");
+        }
+    }
+    index = true;
+
+    //scorrimento orizzontale toSx
+    for (i = 1; i < 9; i++) {
+        if (!$("#box" + "-" + rowposition + "-" + (columnposition -i)).hasClass("withChess") & index) {
+            continue;
+        } else {
+            index = false;
+            $("#box" + "-" + rowposition + "-" + (columnposition - i)).removeClass("move");
+        }
+    }
+    index = true;
+
+
+    //scorrimento orizzontale toDx
+    for (i = 1; i < 9; i++) {
+        if (!$("#box" + "-" + rowposition + "-" + (columnposition + i)).hasClass("withChess") & index) {
+            continue;
+        } else {
+            index = false;
+            $("#box" + "-" + rowposition + "-" + (columnposition + i)).removeClass("move");
+        }
+    }
+    index = true;
+
+    //scorrimento obliquo giu dx
+    for (i = 1; i < 9; i++) {
+        if (!$("#box" + "-" + (rowposition + i) + "-" + (columnposition + i)).hasClass("withChess") & index) {
+            continue;
+        } else {
+            index = false;
+            $("#box" + "-" + (rowposition + i) + "-" + (columnposition + i)).removeClass("move");
+        }
+    }
+    index = true;
+
+    //scorrimento obliquo su sx
+    for (i = 1; i < 9; i++) {
+        if (!$("#box" + "-" + (rowposition - i) + "-" + (columnposition - i)).hasClass("withChess") & index) {
+            continue;
+        } else {
+            index = false;
+            $("#box" + "-" + (rowposition - i) + "-" + (columnposition - i)).removeClass("move");
+        }
+    }
+    index = true;
+
+    //scorrimento obliquo giu sx
+    for (i = 1; i < 9; i++) {
+        if (!$("#box" + "-" + (rowposition - i) + "-" + (columnposition + i)).hasClass("withChess") & index) {
+            continue;
+        } else {
+            index = false;
+            $("#box" + "-" + (rowposition - i) + "-" + (columnposition + i)).removeClass("move");
+        }
+    }
+    index = true;
+
+    for (i = 1; i < 9; i++) {
+        if (!$("#box" + "-" + (rowposition + i) + "-" + (columnposition - i)).hasClass("withChess") & index) {
+            continue;
+        } else {
+            index = false;
+            $("#box" + "-" + (rowposition + i) + "-" + (columnposition - i)).removeClass("move");
+        }
+    }
+    index = true;
 }
 function getEdible() {
-    $(".box").removeClass("edibile");
-    $(".box").each(function () {
-        if ($(this).hasClass("selected") & $(this).hasClass("whiteChess")) {
-            $(".box").each(function () {
-                if ($(this).hasClass("blackpawn") | $(this).hasClass("blackrook") | $(this).hasClass("blackknight") | $(this).hasClass("blackbishop") | $(this).hasClass("blackking") | $(this).hasClass("blackqueen")) {
-                    if ($(this).hasClass("move")) {
-                        $(this).addClass("edibile");
-                        $(this).removeClass("move");
-                    }
-                }
-            });
-        } else if ($(this).hasClass("selected") & $(this).hasClass("blackChess")) {
-            $(".box").each(function () {
-                if ($(this).hasClass("whitepawn") | $(this).hasClass("whiterook") | $(this).hasClass("whiteknight") | $(this).hasClass("whitebishop") | $(this).hasClass("whiteking") | $(this).hasClass("whitequeen")) {
-                    if ($(this).hasClass("move")) {
-                        $(this).addClass("edibile");
-                        $(this).removeClass("move");
-                    }
-                }
-            });
-        }
 
-
-    });
 }
 
 
