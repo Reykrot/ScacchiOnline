@@ -48,38 +48,22 @@
 .move {
     box-shadow: inset 0 0 10px #00FF9E;
 }
-.blackpawn{
+pawn{
 
 }
-.blackrook{
+rook{
 
 }
-.blackknight{
+knight{
 
 }
-.blackbishop{
+bishop{
 
 }
-.blackqueen{
+queen{
 
 }
-.blackking{
-
-}
-.whitepawn {
-}
-.whiterook{
-
-}
-.whiteknight {
-}
-.whitebishop{
-
-}
-.whitequeen{
-
-}
-.whiteking{
+king{
 
 }
 .edibile {
