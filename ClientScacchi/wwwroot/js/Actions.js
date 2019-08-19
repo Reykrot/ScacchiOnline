@@ -418,11 +418,9 @@ function VersoGiu(idposition) {
     var rowposition = parseInt(arrayPosition[1]);
     $("#box" + "-" + rowposition + "-" + columnposition).removeClass("move");
     var index = true;
-    var count = 1;
-
+   
     for (i = 1; i < 9; i++) {
-        if ($(".selected").hasClass("pawn")) & count > 3) {
-            count++;
+        if (($(".selected").hasClass("pawn")) & (i > 2)) {
             continue;
         }
         if ($("#box" + "-" + (rowposition + i) + "-" + columnposition).hasClass("withChess") & index) {
@@ -456,11 +454,10 @@ function VersoSu(idposition) {
     var rowposition = parseInt(arrayPosition[1]);
     $("#box" + "-" + rowposition + "-" + columnposition).removeClass("move");
     var index = true;
-    var count = 1;
-
+    
     for (i = 1; i < 9; i++) {
-        if ($(".selected").hasClass("pawn")) & count > 3) {
-            count++;
+        if (($(".selected").hasClass("pawn")) & (i > 2)) {
+            
             continue;
         }
         if ($("#box" + "-" + (rowposition - i) + "-" + columnposition).hasClass("withChess") & index) {
