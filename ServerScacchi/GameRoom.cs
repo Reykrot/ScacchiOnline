@@ -16,7 +16,5 @@ namespace ServerScacchi
             user[0] = WhitePlayerId;
             TokenRoom = Guid.NewGuid();
         }
-
-
     }
 }

@@ -11,7 +11,7 @@
     <title>Chessboard using Pure CSS and HTML</title>
 </head>
 <body>
-    <div id="board" class="chessboard" ; float:left">
+    <div id="board"  class="chessboard" >
         @{bool isWhite = false; }
 
         @for (int i = 1; i < 9; i++)
@@ -21,11 +21,11 @@
             {
                 if (isWhite)
                 {
-                    <div class="box" style="background-color: #fff" id="box-@i-@x"></div>
+                    <div class="box" style="background-color: #fff" draggable="false" id="box-@i-@x"></div>
                 }
                 else
                 {
-                    <div class="box" style="background-color: #999" id="box-@i-@x"></div>
+                    <div class="box" style="background-color: #999" draggable="false" id="box-@i-@x"></div>
                 }
                 isWhite = !isWhite;
             }
