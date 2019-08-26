@@ -418,7 +418,7 @@ function VersoGiu(idposition) {
     var rowposition = parseInt(arrayPosition[1]);
     $("#box" + "-" + rowposition + "-" + columnposition).removeClass("move");
     var index = true;
-   
+
     for (i = 1; i < 9; i++) {
         if (($(".selected").hasClass("pawn")) & (i > 2)) {
             continue;
@@ -454,10 +454,10 @@ function VersoSu(idposition) {
     var rowposition = parseInt(arrayPosition[1]);
     $("#box" + "-" + rowposition + "-" + columnposition).removeClass("move");
     var index = true;
-    
+
     for (i = 1; i < 9; i++) {
         if (($(".selected").hasClass("pawn")) & (i > 2)) {
-            
+
             continue;
         }
         if ($("#box" + "-" + (rowposition - i) + "-" + columnposition).hasClass("withChess") & index) {
@@ -683,8 +683,22 @@ function knightMovement(idposition) {
         $("#box" + "-" + (rowposition + 2) + "-" + (columnposition + 1)).addClass("edibile");
     }
 
-    $("#box" + "-" + (rowposition + 2) + "-" + (columnposition - 1)).addClass("move");
-    $("#box" + "-" + (rowposition - 2) + "-" + (columnposition + 1)).addClass("move");
+    if (!$("#box" + "-" + (rowposition + 2) + "-" + (columnposition - 1)).hasClass("whithChess")) {
+        $("#box" + "-" + (rowposition + 2) + "-" + (columnposition - 1)).addClass("move");
+    } else if ($(".selected").hasClass("whiteChess") & $$("#box" + "-" + (rowposition + 2) + "-" + (columnposition - 1).hasClass("whiteChess"))) {
+        $("#box" + "-" + (rowposition + 2) + "-" + (columnposition - 1)).addClass("edibile");
+    } else if ($(".selected").hasClass("blackChess") & $("#box" + "-" + (rowposition + 2) + "-" + (columnposition - 1)).hasClass("whiteChess")) {
+        $("#box" + "-" + (rowposition + 2) + "-" + (columnposition - 1)).addClass("edibile");
+    }
+
+    if (!$("#box" + "-" + (rowposition - 2) + "-" + (columnposition + 1)).hasClass("withChess")) {
+        $("#box" + "-" + (rowposition - 2) + "-" + (columnposition + 1)).addClass("move");
+    } else if ($(".selected").hasClass("blackChess") & $("#box" + "-" + (rowposition - 2) + "-" + (columnposition + 1)).hasClass("whiteChess")) {
+        $("#box" + "-" + (rowposition - 2) + "-" + (columnposition + 1)).addClass("edibile");
+    } else if ($(".selected").hasClass("whiteChess") & $("#box" + "-" + (rowposition - 2) + "-" + (columnposition + 1)).hasClass("blackChess")) {
+        $("#box" + "-" + (rowposition - 2) + "-" + (columnposition + 1)).addClass("edibile");
+    }
+
     $("#box" + "-" + (rowposition - 2) + "-" + (columnposition - 1)).addClass("move");
     $("#box" + "-" + (rowposition + 1) + "-" + (columnposition + 2)).addClass("move");
     $("#box" + "-" + (rowposition - 1) + "-" + (columnposition + 2)).addClass("move");
