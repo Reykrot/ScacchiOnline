@@ -15,7 +15,7 @@
             $(".box").removeClass("move");
             $(".box").removeClass("edibile");
             $(oldclick).addClass("box");
-
+            getcall(this, oldclick);
         } else if ($(this).hasClass("edibile")) {
             this.classList = oldclick.classList;
             this.innerHTML = oldclick.innerHTML;
@@ -25,6 +25,7 @@
             $(".box").removeClass("move");
             $(".box").removeClass("edibile");
             $(oldclick).addClass("box");
+            getcall(this, oldclick);
             if (!$(".king").hasClass("blackChess")) {
                 alert("il giocatore Bianco ha vinto!!!");
                 $(".box").html("");
@@ -53,6 +54,8 @@
     });
 
 });
+
+
 
 function startGame() {
 
@@ -155,6 +158,8 @@ function GetMovement(idposition, classlist) {
     if (spostamenti[6] === "1") VersoSx(idposition);
     if (spostamenti[7] === "1") VersoSuSx(idposition);
     if (spostamenti === "*") knightMovement(idposition);
+
+
 }
 
 function VersoGiu(idposition) {
@@ -522,3 +527,39 @@ function pawneatable(idposition) {
     }
 }
 //#endregion -- spostamenti --
+
+function getcall(thisclick, oldclick) {
+    console.log(thisclick);
+    console.log(oldclick);
+
+    $.ajax({
+        type: "get",
+        dataType: "text",
+        url: "https://localhost:44361/home/ToServerSoket",
+        data: {
+            test: nodeToString(thisclick) + "\r\n" + nodeToString(oldclick)
+        },
+        success: function (data) {
+            console.log(data);
+            // alert("Turno dell'avversario");
+            // blocchi la possibilità di fare mosse perchè tocca all'altro
+            playerassignment(data);
+        },
+        error: function () {
+            console.log("errore!");
+            // ripetere mossa perchè non è andata a buon fine
+        }
+    });
+}
+
+function nodeToString(node) {
+    var tmpNode = document.createElement("div");
+    tmpNode.appendChild(node.cloneNode(true));
+    var str = tmpNode.innerHTML;
+    tmpNode = node = null; // prevent memory leaks in IE
+    return str;
+}
+function playerassignment(response) {
+    console.log("assegnazione:" + response);
+
+}

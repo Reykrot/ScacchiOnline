@@ -10,8 +10,10 @@ namespace ClientScacchi.Controllers
 {
     public class HomeController : Controller
     {
+
         public IActionResult Index()
         {
+            
             return View();
         }
 
@@ -24,6 +26,17 @@ namespace ClientScacchi.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public string ToServerSoket(string test)
+        {
+            SoketClientAsync.StartClient(test);
+
+            return "Succes!";
+        }
+        public IActionResult startGame()
+        {
+            return View();
         }
     }
 }

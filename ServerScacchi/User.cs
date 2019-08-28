@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ServerScacchi
 {
-    class User
+    public class User
     {
         internal Guid UserToken { get; set; }
         public User()

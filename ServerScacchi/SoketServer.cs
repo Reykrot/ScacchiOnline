@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -10,8 +9,11 @@ namespace ServerScacchi
 {
     class SoketServer
     {
-        
+
         public static ManualResetEvent allDone = new ManualResetEvent(false);
+
+
+
         public SoketServer()
         {
         }
@@ -23,6 +25,8 @@ namespace ServerScacchi
 
             Socket listener = new Socket(ipAddress.AddressFamily,
                 SocketType.Stream, ProtocolType.Tcp);
+
+            Console.WriteLine("Server in ascolto" + ipAddress + 11000);
 
             try
             {
@@ -71,32 +75,46 @@ namespace ServerScacchi
                     state.buffer, 0, bytesRead));
 
                 content = state.sb.ToString();
-                if (content.IndexOf("q=0.6") > -1)
-                {
-                    string myBinary = null;
-                    string[] arraydata = content.Split(' ');
-                    if (arraydata[1].Contains("favicon"))
-                    {
-                        using (StreamReader streamReader = new StreamReader(@"C:\Users\g.morleschi\source\repos\MVCExercize\MVCExercize\staticfile\favicon.ico"))
-                        {
-                            myBinary = streamReader.ReadToEnd();
-                        }
-                    }
 
-                    Send(handler, soketResponse.Response());
+                //messaggio del client
+                Console.WriteLine(content);
 
-                    if (myBinary != null)
-                    {
-                        Send(handler, myBinary);
-                    }
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
-                }
-                else
+                if (!content.Contains("player"))
                 {
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReadCallback), state);
+                    ColorAssignManager colorAssignManager = new ColorAssignManager();
+                    Send(handler, soketResponse.Response(colorAssignManager.ColorAssignation(content)));
                 }
+
+                //if (content.IndexOf("q=0.6") > -1)
+                //{
+                string myBinary = null;
+                string[] arraydata = content.Split(' ');
+                if (arraydata[1].Contains("favicon"))
+                {
+                    using (StreamReader streamReader = new StreamReader(@"C:\Users\g.morleschi\source\repos\MVCExercize\MVCExercize\staticfile\favicon.ico"))
+                    {
+                        myBinary = streamReader.ReadToEnd();
+                    }
+                }
+
+                //risposta del server
+                Console.WriteLine(soketResponse.Response("Poldo"));
+                Send(handler, soketResponse.Response("pippo"));
+
+                if (myBinary != null)
+                {
+                    Send(handler, myBinary);
+                }
+                              
+                
+                //handler.Shutdown(SocketShutdown.Both);
+                //handler.Close();
+                // }
+                // else
+                // {
+                //     handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                //    new AsyncCallback(ReadCallback), state);
+                //}
             }
         }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ServerScacchi
 {
-    class GameRoom
+    public class GameRoom
     {
         private Guid TokenRoom { get; set; }
         private User WhitePlayerId;
