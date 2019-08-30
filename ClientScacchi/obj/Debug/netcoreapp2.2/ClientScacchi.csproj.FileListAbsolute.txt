@@ -59,3 +59,4 @@ C:\Users\Reykrot\Source\Repos\ScacchiOnline\ClientScacchi\obj\Debug\netcoreapp2.
 C:\Users\Reykrot\Source\Repos\ScacchiOnline\ClientScacchi\obj\Debug\netcoreapp2.2\ClientScacchi.pdb
 C:\Users\Reykrot\Source\Repos\ScacchiOnline\ClientScacchi\obj\Debug\netcoreapp2.2\ClientScacchi.csproj.CopyComplete
 C:\Users\g.morleschi\source\repos\ScacchiOnline\ClientScacchi\obj\Debug\netcoreapp2.2\Razor\Views\Home\startGame.g.cshtml.cs
+C:\Users\g.morleschi\source\repos\ScacchiOnline\ClientScacchi\obj\Debug\netcoreapp2.2\Razor\Views\Home\Lobby.g.cshtml.cs

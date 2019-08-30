@@ -75,3 +75,7 @@ king{
 .whiteplayer{
 
 }
+.clickdisable{
+    pointer-events: none;
+    cursor: default;
+}

@@ -6,10 +6,13 @@ namespace ServerScacchi
 {
     public class User
     {
-        internal Guid UserToken { get; set; }
+        public string Name { get; set; }
+        public string Color { get; set; }
+        public Guid Token { get; set; }
+        public string Password { get; set; }
         public User()
         {
-            UserToken = Guid.NewGuid();
+            Token = Guid.NewGuid(); 
         }
     }
 }

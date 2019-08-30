@@ -1,0 +1,11 @@
+﻿@model LogInInfo
+@{
+    ViewData["Title"] = "Lobby";
+}
+
+<h1>Lobby</h1>
+<body>
+    <header><script type="text/javascript" src="~/js/LobbyAction.js"></script></header>
+    <input type="button" id="startgame" value="Enter Game" onclick="window.location='@Url.Action("StartGame", "Home")'"/>
+
+</body>

@@ -1,9 +1,11 @@
-﻿$(document).ready(function () {
+﻿var correctassegnation = true;
+$(document).ready(function () {
     startGame();
     var oldclick = "";
     $(".box").ondragstart = function () {
         return false;
     };
+
 
     $(".box").click(function () {
         if ($(this).hasClass("move")) {
@@ -53,6 +55,10 @@
         }
     });
 
+    if (correctassegnation) {
+        playerassignment();
+        correctassegnation = false;
+    }
 });
 
 
@@ -537,13 +543,12 @@ function getcall(thisclick, oldclick) {
         dataType: "text",
         url: "https://localhost:44361/home/ToServerSoket",
         data: {
-            test: nodeToString(thisclick) + "\r\n" + nodeToString(oldclick)
+            test:"move ;" nodeToString(thisclick) + "\r\n" + nodeToString(oldclick)
         },
         success: function (data) {
             console.log(data);
             // alert("Turno dell'avversario");
             // blocchi la possibilità di fare mosse perchè tocca all'altro
-            playerassignment(data);
         },
         error: function () {
             console.log("errore!");
@@ -559,7 +564,31 @@ function nodeToString(node) {
     tmpNode = node = null; // prevent memory leaks in IE
     return str;
 }
-function playerassignment(response) {
-    console.log("assegnazione:" + response);
+function playerassignment() {
 
+    $.ajax({
+        type: "get",
+        dataType: "text",
+        url: "https://localhost:44361/home/ToServerSoket",
+        data: {
+            test: "Color"
+        },
+        success: function (response) {
+            if (response === "whiteplayer") {
+                if ($(".box").hasClass("whiteChess")) {
+                    $(".blackChess").addClass("clickdisable");
+                    console.log("assegnazione eseguita");
+                    console.log(response);
+                }
+
+            } else {
+                $(".whiteChess").click(false);
+            }
+        },
+        error: function () {
+            console.log("assegnazione Fallita");
+        }
+    });
+   
+   
 }
