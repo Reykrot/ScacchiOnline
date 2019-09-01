@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServerScacchi.Manager;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -10,11 +11,10 @@ namespace ServerScacchi
 {
     class SoketServer
     {
-        
         public static ManualResetEvent allDone = new ManualResetEvent(false);
-        public SoketServer()
-        {
-        }
+        private static GameManager gameManager = new GameManager();
+        private static ResponseManager responseManager = new ResponseManager();
+        private static string ToOtherUser = "";
         public static void StartListening()
         {
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
@@ -23,6 +23,8 @@ namespace ServerScacchi
 
             Socket listener = new Socket(ipAddress.AddressFamily,
                 SocketType.Stream, ProtocolType.Tcp);
+
+            Console.WriteLine("Server in ascolto" + ipAddress + 11000);
 
             try
             {
@@ -71,10 +73,15 @@ namespace ServerScacchi
                     state.buffer, 0, bytesRead));
 
                 content = state.sb.ToString();
-                if (content.IndexOf("q=0.6") > -1)
+
+                //messaggio del client
+                Console.WriteLine(content);
+                content = responseManager.Start(content);
+                               
+                string myBinary = null;
+                string[] arraydata = content.Split(' ');
+                if (arraydata.Length > 1)
                 {
-                    string myBinary = null;
-                    string[] arraydata = content.Split(' ');
                     if (arraydata[1].Contains("favicon"))
                     {
                         using (StreamReader streamReader = new StreamReader(@"C:\Users\g.morleschi\source\repos\MVCExercize\MVCExercize\staticfile\favicon.ico"))
@@ -82,21 +89,36 @@ namespace ServerScacchi
                             myBinary = streamReader.ReadToEnd();
                         }
                     }
-
-                    Send(handler, soketResponse.Response());
-
-                    if (myBinary != null)
-                    {
-                        Send(handler, myBinary);
-                    }
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
+                }
+                //risposta del server
+                if (content != ToOtherUser && ToOtherUser != "")
+                {
+                    Send(handler, soketResponse.Response(ToOtherUser));
+                    Console.WriteLine(soketResponse.Response(ToOtherUser));
                 }
                 else
                 {
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReadCallback), state);
+                    Send(handler, soketResponse.Response(content));
+                    Console.WriteLine(soketResponse.Response(content));
                 }
+                if (content.Contains("<div"))
+                {
+                    ToOtherUser = content;
+                }
+
+                if (myBinary != null)
+                {
+                    Send(handler, myBinary);
+                }
+
+                //handler.Shutdown(SocketShutdown.Both);
+                //handler.Close();
+                // }
+                // else
+                // {
+                //     handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                //    new AsyncCallback(ReadCallback), state);
+                //}
             }
         }
 
@@ -115,7 +137,6 @@ namespace ServerScacchi
                 int bytesSent = handler.EndSend(ar);
                 //handler.Shutdown(SocketShutdown.Both);
                 //handler.Close();
-
             }
             catch (Exception e)
             {
