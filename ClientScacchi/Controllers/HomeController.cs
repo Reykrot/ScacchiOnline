@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ClientScacchi.Models;
 using System.IO;
+using Microsoft.AspNetCore.Http;
+using System.Runtime.InteropServices.ComTypes;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClientScacchi.Controllers
 {
@@ -29,16 +31,36 @@ namespace ClientScacchi.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public string ToServerSoket(string test)
+        public string ToServerSoket(string toserver)
         {
-            SynchronousSocketClient.StartClient(test, out string respFromSeerver);
+
+            if (toserver == "refresh")
+            {
+                return toserver;
+            }
+            SynchronousSocketClient.StartClient(TakeTokenFromCookie() + " / " + toserver, out string respFromSeerver);
 
             return respFromSeerver;
         }
-        public IActionResult startGame()
+        public IActionResult StartGame()
         {
-            return View();
+            SynchronousSocketClient.StartClient(TakeTokenFromCookie() + " / " + "RoomRequest", out string value);
+
+            if (value.Contains("ok"))
+            {
+                return View();
+            }
+            else if (value.Contains("ko"))
+            {
+                return View("Lobby");
+            }
+            else
+            {
+                return View("Index");
+            }
+
         }
+
         [HttpPost]
         public IActionResult LogIn(LogInInfo info)
         {
@@ -54,24 +76,51 @@ namespace ClientScacchi.Controllers
                     line = reader.ReadLine();
                 }
             }
-            foreach (string userinfo in account)
+            if (!Request.Cookies.ContainsKey("token"))
             {
-                if (userinfo.ToLower().Contains(info.Name.ToLower()))
+                foreach (string userinfo in account)
                 {
-                    if (userinfo.ToLower().Contains(info.Password.ToLower()))
+                    if (userinfo.ToLower().Contains(info.Name.ToLower()))
                     {
-                        returnpage = "Lobby";
-                        SynchronousSocketClient.StartClient("Player ; User: "+info.Name + ";" +"Password: "+info.Password, out string respfromServer);
-                        break;
-                    }
-                    else
-                    {
-                        returnpage = "LogIn";
-                        break;
+                        if (userinfo.ToLower().Contains(info.Password.ToLower()))
+                        {
+                            Response.Cookies.Delete("token");
+                            returnpage = "Lobby";
+                            SynchronousSocketClient.StartClient("Player ; User: " + info.Name + " ; " + "Password: " + info.Password, out string respfromServer);
+
+                            UserClient userClient = new UserClient();
+                            userClient.Name = info.Name;
+                            userClient.Password = info.Password;
+                            userClient.Token = respfromServer;
+                            //  UserClient.UserPlayer.Add(userClient);
+                            //   CookieOptions options = new CookieOptions();
+                            // options.Expires = DateTime.Now.AddHours(1);
+                            Response.Cookies.Append("token", userClient.Token);
+
+
+                            break;
+                        }
+                        else
+                        {
+                            returnpage = "LogIn";
+                            break;
+                        }
                     }
                 }
             }
+            else
+            {
+                returnpage = "Lobby";
+            }
+
             return View(returnpage);
+        }
+
+
+        public string TakeTokenFromCookie()
+        {
+            Request.Cookies.TryGetValue("token", out string token);
+            return token;
         }
     }
 }

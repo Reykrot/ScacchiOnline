@@ -12,7 +12,6 @@ namespace ServerScacchi
     class SoketServer
     {
         public static ManualResetEvent allDone = new ManualResetEvent(false);
-        private static GameManager gameManager = new GameManager();
         private static ResponseManager responseManager = new ResponseManager();
         private static string ToOtherUser = "";
         public static void StartListening()
@@ -76,8 +75,8 @@ namespace ServerScacchi
 
                 //messaggio del client
                 Console.WriteLine(content);
+                //if (content == "refresh") { }
                 content = responseManager.Start(content);
-                               
                 string myBinary = null;
                 string[] arraydata = content.Split(' ');
                 if (arraydata.Length > 1)
@@ -91,20 +90,29 @@ namespace ServerScacchi
                     }
                 }
                 //risposta del server
-                if (content != ToOtherUser && ToOtherUser != "")
-                {
-                    Send(handler, soketResponse.Response(ToOtherUser));
-                    Console.WriteLine(soketResponse.Response(ToOtherUser));
-                }
+                //if (content != ToOtherUser && ToOtherUser != "")
+                //{
+                    //Send(handler, soketResponse.Response(ToOtherUser));
+                    //Console.WriteLine(soketResponse.Response(ToOtherUser));
+                //}
                 else
                 {
                     Send(handler, soketResponse.Response(content));
-                    Console.WriteLine(soketResponse.Response(content));
+                    //Console.WriteLine(soketResponse.Response(content));
                 }
-                if (content.Contains("<div"))
+                if (content.Contains("div"))
                 {
+                    Send(handler, soketResponse.Response(ToOtherUser));
                     ToOtherUser = content;
+                    Send(handler, soketResponse.Response(ToOtherUser));
                 }
+                //if (content == "")
+                //{
+                //    Send(handler, soketResponse.Response(ToOtherUser));
+                //}
+
+
+
 
                 if (myBinary != null)
                 {
