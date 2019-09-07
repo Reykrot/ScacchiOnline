@@ -6,14 +6,14 @@ namespace ServerScacchi
 {
     public class GameRoom
     {
-        private static Dictionary<Guid, GameRoom> Singleton = new Dictionary<Guid, GameRoom>();
-        private Guid TokenRoom { get; set; }
-        private static List<User> Player = new List<User>();
-        private GameRoom()
+        public static Dictionary<Guid, GameRoom> Singleton = new Dictionary<Guid, GameRoom>();
+        public Guid TokenRoom { get; set; }
+        public List<User> Player = new List<User>();
+        private GameRoom(Guid token)
         {
-            TokenRoom = Guid.NewGuid();
+            TokenRoom = token;
         }
-        public GameRoom CreateGetInstance(Guid token)
+        public static GameRoom Instance(Guid token)
         {
             if (Singleton.ContainsKey(token))
             {
@@ -23,26 +23,10 @@ namespace ServerScacchi
             }
             else
             {
-                GameRoom gameRoom = new GameRoom();
-                Singleton.Add(TokenRoom, gameRoom);
+                GameRoom gameRoom = new GameRoom(token);
+                Singleton.Add(gameRoom.TokenRoom, gameRoom);
                 return gameRoom;
             }
-        }
-        public void AddPlayerToList(User user)
-        {
-            Player.Add(user);
-        }
-        public User FindPlayer(Guid token)
-        {
-            User returnuser = null;
-            foreach (User user in Player)
-            {
-                if (user.Token == token)
-                {
-                    returnuser = user;
-                } 
-            } 
-            return returnuser;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿var correctassegnation = true;
+﻿var playercolor = "";
+var correctassegnation = true;
 $(document).ready(function () {
     startGame();
     var oldclick = "";
@@ -53,6 +54,11 @@ $(document).ready(function () {
         } else {
             $(this).removeClass("withChess");
         }
+    });
+
+    $(".box").click(function () {
+        refreshtable();
+
     });
 
     if (correctassegnation) {
@@ -543,10 +549,11 @@ function getcall(thisclick, oldclick) {
         dataType: "text",
         url: "https://localhost:44361/home/ToServerSoket",
         data: {
-            test:"move ;" nodeToString(thisclick) + "\r\n" + nodeToString(oldclick)
+            toserver: "move ; " + nodeToString(thisclick) + " \r\n " + nodeToString(oldclick)
         },
         success: function (data) {
             console.log(data);
+            refreshtable();
             // alert("Turno dell'avversario");
             // blocchi la possibilità di fare mosse perchè tocca all'altro
         },
@@ -555,6 +562,7 @@ function getcall(thisclick, oldclick) {
             // ripetere mossa perchè non è andata a buon fine
         }
     });
+    $(".box").addClass("clickdisable");
 }
 
 function nodeToString(node) {
@@ -571,24 +579,54 @@ function playerassignment() {
         dataType: "text",
         url: "https://localhost:44361/home/ToServerSoket",
         data: {
-            test: "Color"
+            toserver: "Color"
         },
         success: function (response) {
             if (response === "whiteplayer") {
-                if ($(".box").hasClass("whiteChess")) {
-                    $(".blackChess").addClass("clickdisable");
-                    console.log("assegnazione eseguita");
-                    console.log(response);
-                }
+                $(".blackChess").addClass("clickdisable");
+                console.log(response);
+                console.log("assegnazione eseguita");
+                playercolor = "whiteplayer";
+                console.log(playercolor);
 
-            } else {
-                $(".whiteChess").click(false);
+            } else if (response === "blackplayer") {
+                $(".whiteChess").addClass("clickdisable");
+                playercolor = "blackplayer";
+
             }
         },
         error: function () {
             console.log("assegnazione Fallita");
         }
     });
-   
-   
+
+
+}
+
+function refreshtable() {
+
+    $.ajax({
+        type: "get",
+        dataType: "text",
+        url: "https://localhost:44361/home/ToServerSoket",
+        data: {
+            toserver: "refresh"
+        },
+        success: function (response) {
+            console.log(response + "pippo");
+            if (playercolor === "whiteplayer") {
+
+                console.log("riattivazione "+ playercolor);
+                $(".whiteChess").removeClass("clickdisable");
+            }
+            else if (playercolor === "blackplayer") {
+                console.log("riattivazione " + playercolor);
+                $(".blackChess").removeClass("clickdisable");
+            }
+           
+        },
+        error: function () {
+            console.log("refresh Fallito");
+        }
+    });
 }
