@@ -23,7 +23,7 @@ namespace ServerScacchi.Manager
             if (arrayResp[0].ToLower() == "Player".ToLower())
             {
                 
-                finalResponse = CreateRoom(CreatePlayer(arrayResp));
+                finalResponse = AddRoom(CreatePlayer(arrayResp));
             }
 
             return finalResponse;
@@ -36,7 +36,7 @@ namespace ServerScacchi.Manager
             user.Password = arrayResp[6];
             return user;
         }
-        public string CreateRoom(User user)
+        public string AddRoom(User user)
         {
             GameManager gameManager = new GameManager();
             foreach (User users in UserForGame)
