@@ -13,7 +13,6 @@ namespace ServerScacchi
     {
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         private static ResponseManager responseManager = new ResponseManager();
-        private static string ToOtherUser = "";
         public static void StartListening()
         {
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
@@ -75,7 +74,7 @@ namespace ServerScacchi
 
                 //messaggio del client
                 Console.WriteLine(content);
-
+                //if (content == "refresh") { }
                 content = responseManager.Start(content);
                 string myBinary = null;
                 string[] arraydata = content.Split(' ');
@@ -90,34 +89,16 @@ namespace ServerScacchi
                     }
                 }
                 //risposta del server
-                //if (content != ToOtherUser && ToOtherUser != "")
-                //{
-                //Send(handler, soketResponse.Response(ToOtherUser));
-                //Console.WriteLine(soketResponse.Response(ToOtherUser));
-                //}
                 else
                 {
                     Send(handler, soketResponse.Response(content));
                     //Console.WriteLine(soketResponse.Response(content));
                 }
-                if (content.Contains("div"))
-                {
-                    ToOtherUser = content;
-                    Send(handler, soketResponse.Response(ToOtherUser));
-                }
-                //if (content == "")
-                //{
-                //    Send(handler, soketResponse.Response(ToOtherUser));
-                //}
-
-
-
-
                 if (myBinary != null)
                 {
                     Send(handler, myBinary);
                 }
-
+                Send(handler, soketResponse.Response(content));
                 //handler.Shutdown(SocketShutdown.Both);
                 //handler.Close();
                 // }

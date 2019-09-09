@@ -1,5 +1,8 @@
 ﻿var playercolor = "";
 var correctassegnation = true;
+var classes;
+var id;
+var style;
 $(document).ready(function () {
     startGame();
     var oldclick = "";
@@ -56,15 +59,15 @@ $(document).ready(function () {
         }
     });
 
-    $(".box").click(function () {
-        refreshtable();
-
-    });
-
     if (correctassegnation) {
         playerassignment();
         correctassegnation = false;
     }
+
+    $("#refresh").click(function () {
+        console.log("bottone premuto");
+        refreshtable();
+    });
 });
 
 
@@ -142,6 +145,8 @@ function GetMovement(idposition, classlist) {
                 spostamenti = "10000000";
                 pawneatable(idposition);
             }
+
+
             break;
         case "rook":
             spostamenti = "10101010";
@@ -551,18 +556,12 @@ function getcall(thisclick, oldclick) {
         },
         success: function (data) {
             console.log(data);
-            refreshtable();
-            // alert("Turno dell'avversario");
-            // blocchi la possibilità di fare mosse perchè tocca all'altro
         },
         error: function () {
             console.log("errore!");
-            // ripetere mossa perchè non è andata a buon fine
         }
     });
-    $(".blackChess").addClass("clickdisable");
-    $(".whiteChess").addClass("clickdisable");
-
+    $(".withChess").addClass("clickdisable");
 }
 
 function nodeToString(node) {
@@ -584,21 +583,26 @@ function playerassignment() {
         success: function (response) {
             if (response === "whiteplayer") {
                 $(".blackChess").addClass("clickdisable");
+                console.log(response);
+                console.log("assegnazione eseguita");
                 playercolor = "whiteplayer";
+                console.log(playercolor);
 
             } else if (response === "blackplayer") {
                 $(".whiteChess").addClass("clickdisable");
                 playercolor = "blackplayer";
+
             }
         },
         error: function () {
             console.log("assegnazione Fallita");
         }
     });
+
+
 }
 
 function refreshtable() {
-
     $.ajax({
         type: "get",
         dataType: "text",
@@ -607,20 +611,68 @@ function refreshtable() {
             toserver: "refresh"
         },
         success: function (response) {
-            console.log(response + "pippo");
+            console.log(response);
             if (playercolor === "whiteplayer") {
+                if (responserefresh(response)) {
+                    $(".whiteChess").removeClass("clickdisable");
+                    responserefresh(response);
 
-                console.log("riattivazione "+ playercolor);
-                $(".whiteChess").removeClass("clickdisable");
+                }
+            } else if (playercolor === "blackplayer") {
+                if (responserefresh(response)) {
+                    $(".blackChess").removeClass("clickdisable");
+                    responserefresh(response);
+
+                }
             }
-            else if (playercolor === "blackplayer") {
-                console.log("riattivazione " + playercolor);
-                $(".blackChess").removeClass("clickdisable");
-            }
-           
         },
         error: function () {
             console.log("refresh Fallito");
         }
     });
+}
+
+function responserefresh(response) {
+
+    var lockunlok = response.split(" ");
+    if (lockunlok[0] === "lock") {
+        return false;
+    } else if (lockunlok[0] === "unlock") {
+        return true;
+    }
+}
+
+function parsemovement(response) {
+    var arrayresponse = response.split(" ");
+    var i;
+    for (i = 0; i < (arrayresponse.length + 1); i++) {
+        if (arrayresponse[i].indexOf("class") >= 0 | arrayresponse[i].indexOf("pawn") >= 0 | arrayresponse[i].indexOf("rook") >= 0 | arrayresponse[i].indexOf("knight") >= 0 |
+            arrayresponse[i].indexOf("bishop") >= 0 | arrayresponse[i].indexOf("king") >= 0 | arrayresponse[i].indexOf("queen") >= 0 | arrayresponse[i].indexOf("selected") >= 0 |
+            arrayresponse[i].indexOf("withChess") >= 0 | arrayresponse[i].indexOf("whiteChess") >= 0 | arrayresponse[i].indexOf("blackChess") >= 0 | arrayresponse[i].indexOf("move") >= 0 |
+            arrayresponse[i].indexOf("edibile") >= 0 | arrayresponse[i].indexOf("clickdisable") >= 0) {
+            classes = classes + arrayresponse[i] + " ";
+      
+        }
+        if (arrayresponse[i].indexOf("id") >= 0) {
+            var b;
+            for (b = 0; b < arrayresponse[i].length; i++) {
+                id = id + arrayresponse[i][b];
+            }
+          
+        }
+        if (arrayresponse[i].indexOf("style") >= 0 | arrayresponse[1].indexOf("#") >= 0) {
+            style = style + arrayresponse[i];
+        }
+        
+        }
+    i = 1;
+    responserefresh(response);
+    console.log(id);
+    console.log(classes);
+    var arrayclas = classes.split(" ");
+    $("#" + id).addclass("box");
+    for (i = 1; i < (arrayclas.length + 1); i++) {
+        $("#" + id).addclass(arrayclas[i]);
+    }
+
 }

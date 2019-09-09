@@ -62,7 +62,7 @@ namespace ClientScacchi.Controllers
             string returnpage = "";
             List<string> account = new List<string>();
 
-            using (StreamReader reader = new StreamReader("C:/Users/Reykrot/source/repos/ScacchiOnline/ClientScacchi/DB.csv"))
+            using (StreamReader reader = new StreamReader("C:/Users/g.morleschi/source/repos/ScacchiOnline/ClientScacchi/DB.csv"))
             {
                 string line = reader.ReadLine();
                 while (line != null)
@@ -87,7 +87,7 @@ namespace ClientScacchi.Controllers
                             userClient.Name = info.Name;
                             userClient.Password = info.Password;
                             userClient.Token = respfromServer;
-                            UserClient.UserPlayer.Add(userClient);
+                            //  UserClient.UserPlayer.Add(userClient);
                             CookieOptions options = new CookieOptions();
                             options.Expires = DateTime.Now.AddMinutes(5);
                             options.IsEssential = true;
