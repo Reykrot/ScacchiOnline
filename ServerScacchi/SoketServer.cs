@@ -75,7 +75,7 @@ namespace ServerScacchi
 
                 //messaggio del client
                 Console.WriteLine(content);
-                //if (content == "refresh") { }
+
                 content = responseManager.Start(content);
                 string myBinary = null;
                 string[] arraydata = content.Split(' ');
@@ -92,8 +92,8 @@ namespace ServerScacchi
                 //risposta del server
                 //if (content != ToOtherUser && ToOtherUser != "")
                 //{
-                    //Send(handler, soketResponse.Response(ToOtherUser));
-                    //Console.WriteLine(soketResponse.Response(ToOtherUser));
+                //Send(handler, soketResponse.Response(ToOtherUser));
+                //Console.WriteLine(soketResponse.Response(ToOtherUser));
                 //}
                 else
                 {
@@ -102,7 +102,6 @@ namespace ServerScacchi
                 }
                 if (content.Contains("div"))
                 {
-                    Send(handler, soketResponse.Response(ToOtherUser));
                     ToOtherUser = content;
                     Send(handler, soketResponse.Response(ToOtherUser));
                 }

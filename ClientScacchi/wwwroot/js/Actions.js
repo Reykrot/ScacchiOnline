@@ -142,8 +142,6 @@ function GetMovement(idposition, classlist) {
                 spostamenti = "10000000";
                 pawneatable(idposition);
             }
-
-
             break;
         case "rook":
             spostamenti = "10101010";
@@ -562,7 +560,9 @@ function getcall(thisclick, oldclick) {
             // ripetere mossa perchè non è andata a buon fine
         }
     });
-    $(".box").addClass("clickdisable");
+    $(".blackChess").addClass("clickdisable");
+    $(".whiteChess").addClass("clickdisable");
+
 }
 
 function nodeToString(node) {
@@ -584,23 +584,17 @@ function playerassignment() {
         success: function (response) {
             if (response === "whiteplayer") {
                 $(".blackChess").addClass("clickdisable");
-                console.log(response);
-                console.log("assegnazione eseguita");
                 playercolor = "whiteplayer";
-                console.log(playercolor);
 
             } else if (response === "blackplayer") {
                 $(".whiteChess").addClass("clickdisable");
                 playercolor = "blackplayer";
-
             }
         },
         error: function () {
             console.log("assegnazione Fallita");
         }
     });
-
-
 }
 
 function refreshtable() {
