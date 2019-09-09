@@ -33,11 +33,6 @@ namespace ClientScacchi.Controllers
 
         public string ToServerSoket(string toserver)
         {
-
-            if (toserver == "refresh")
-            {
-                return toserver;
-            }
             SynchronousSocketClient.StartClient(TakeTokenFromCookie() + " / " + toserver, out string respFromSeerver);
 
             return respFromSeerver;
@@ -93,9 +88,10 @@ namespace ClientScacchi.Controllers
                             userClient.Password = info.Password;
                             userClient.Token = respfromServer;
                             //  UserClient.UserPlayer.Add(userClient);
-                            //   CookieOptions options = new CookieOptions();
-                            // options.Expires = DateTime.Now.AddHours(1);
-                            Response.Cookies.Append("token", userClient.Token);
+                            CookieOptions options = new CookieOptions();
+                            options.Expires = DateTime.Now.AddMinutes(5);
+                            options.IsEssential = true;
+                            Response.Cookies.Append("token", userClient.Token, options);
 
 
                             break;

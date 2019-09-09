@@ -7,10 +7,10 @@ namespace ServerScacchi.Manager
 {
     class ResponseManager
     {
-
-
         public static List<User> WhaitingList = new List<User>();
         public bool counter = true;
+        public static string ToBlackPlayer { get; set; }
+        public static string ToWhitePlayer { get; set; }
         public string RespToServer { get; set; }
         public Guid PlayerToken { get; set; }
         public string Start(string content)
@@ -36,7 +36,6 @@ namespace ServerScacchi.Manager
             else if (RespToServer.Contains("GameStart"))
             {
                 finalResponse = RoomRequest(guid);
-
             }
             else if (RespToServer.Contains("Color"))
             {
@@ -45,15 +44,16 @@ namespace ServerScacchi.Manager
             }
             else if (RespToServer.Contains("move"))
             {
-                finalResponse = ParseMovement();
+                finalResponse = ResponseAssigment(guid, ParseMovement());
             }
             else if (RespToServer.Contains("refresh"))
             {
-                finalResponse = "refresh";
+                finalResponse = MoveNotification(guid); ;
             }
 
-                return finalResponse;
+            return finalResponse;
         }
+
         public string CreatePlayer(string[] arrayResp)
         {
             arrayResp = RespToServer.Split(" ");
@@ -68,17 +68,16 @@ namespace ServerScacchi.Manager
 
             return "errore nella creazione utente";
         }
+
         public Guid PlayerParse(string token)
         {
             if (!token.Contains("Player") | token.Contains("move"))
             {
-                if (token.Contains("refresh")) return new Guid();
                 string[] tokenarray = token.Split(" / ");
 
                 PlayerToken = Guid.Parse(tokenarray[0]);
 
                 return PlayerToken;
-
             }
             else
             {
@@ -86,16 +85,22 @@ namespace ServerScacchi.Manager
                 return pippo;
             }
         }
+
         public string CreateRoom(Guid Token)
         {
-            GameRoom.Instance(Token);
+            foreach (User user in WhaitingList)
+            {
+                if (user.Token == Token)
+                {
+                    GameRoom.Instance(Token).Player.Add(user);
+                }
+            }
 
             return "ok";
         }
 
         public string RoomRequest(Guid guid)
         {
-
             if (GameRoom.Singleton.Count == 0) return CreateRoom(guid);
             foreach (KeyValuePair<Guid, GameRoom> entry in GameRoom.Singleton)
             {
@@ -109,21 +114,19 @@ namespace ServerScacchi.Manager
                             return "ok";
                         }
                     }
-
                 }
                 else
                 {
                     return CreateRoom(guid);
                 }
             }
-
             return "something goes wrong!";
         }
+
         public string AssignColor(Guid guid)
         {
             foreach (User coloruser in WhaitingList)
             {
-
                 if (coloruser.Color == null)
                 {
                     if (counter)
@@ -146,20 +149,39 @@ namespace ServerScacchi.Manager
         {
             string returned = "";
             GameRoom.Singleton.TryGetValue(guid, out GameRoom value);
-            foreach (User coloruser in WhaitingList)
+            if (value != null)
             {
-                if (value.Player.Count == 0)
+                foreach (User coloruser in WhaitingList)
                 {
-                    value.Player.Add(coloruser);
+                    if (value.Player.Count == 0)
+                    {
+                        value.Player.Add(coloruser);
+                    }
+                    else if (value.Player[0].Color != coloruser.Color)
+                    {
+                        value.Player.Add(coloruser);
+                    }
+                    if (coloruser.Token == guid)
+                    {
+                        returned = coloruser.Color;
+                    }
                 }
-                else if (value.Player[0].Color != coloruser.Color)
+            }
+            else
+            {
+                foreach (KeyValuePair<Guid, GameRoom> Entity in GameRoom.Singleton)
                 {
-                    value.Player.Add(coloruser);
-                }
-
-                if (coloruser.Token == guid)
-                {
-                    returned = coloruser.Color;
+                    if (Entity.Value.Player.Count < 2)
+                    {
+                        foreach (User coloruser in WhaitingList)
+                        {
+                            if (coloruser.Token == guid)
+                            {
+                                Entity.Value.Player.Add(coloruser);
+                                returned = coloruser.Color;
+                            }
+                        }
+                    }
                 }
             }
             return returned;
@@ -168,17 +190,61 @@ namespace ServerScacchi.Manager
         public string ParseMovement()
         {
             string[] toParse = RespToServer.Split(" ");
-
             string response = "";
-
             int count = 0;
             foreach (string item in toParse)
             {
                 if (count < 4) { count++; continue; }
                 response = response + item + " ";
             }
-
             return response;
+        }
+
+        public string ResponseAssigment(Guid guid, string movment)
+        {
+            string message = "something goes wrong in assegnation move";
+            foreach (KeyValuePair<Guid, GameRoom> Entry in GameRoom.Singleton)
+            {
+                foreach (User player in Entry.Value.Player)
+                {
+                    if (player.Token == guid)
+                    {
+                        if (player.Color == "whiteplayer")
+                        {
+                            ToBlackPlayer = movment;
+                        }
+                        else if (player.Color == "blackplayer")
+                        {
+                            ToWhitePlayer = movment;
+                        }
+                    }
+                }
+            }
+
+            return message;
+        }
+
+        public string MoveNotification(Guid guid)
+        {
+            string response = "Something goes wron with move";
+            foreach (KeyValuePair<Guid, GameRoom> Entry in GameRoom.Singleton)
+            {
+                foreach (User player in Entry.Value.Player)
+                {
+                    if (player.Token == guid)
+                    {
+                        if (player.Color == "whiteplayer")
+                        {
+                            response = ToWhitePlayer;
+                        }
+                        else if (player.Color == "blackplayer")
+                        {
+                            response = ToBlackPlayer;
+                        }
+                    }
+                }
+            }
+            return "unlock " + response;
         }
     }
 }
