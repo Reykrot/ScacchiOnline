@@ -10,7 +10,6 @@ $(document).ready(function () {
         return false;
     };
 
-
     $(".box").click(function () {
         if ($(this).hasClass("move")) {
             this.classList = oldclick.classList;
@@ -37,7 +36,7 @@ $(document).ready(function () {
                 $(".box").html("");
                 startGame();
             } else if (!$(".king").hasClass("whiteChess")) {
-                alert("il giocatore Nero ha vinto!!!");
+                window.alert("il giocatore Nero ha vinto!!!");
                 $(".box").html("");
                 startGame();
             }
@@ -583,15 +582,13 @@ function playerassignment() {
         success: function (response) {
             if (response === "whiteplayer") {
                 $(".blackChess").addClass("clickdisable");
-                console.log(response);
                 console.log("assegnazione eseguita");
                 playercolor = "whiteplayer";
-                console.log(playercolor);
-
             } else if (response === "blackplayer") {
                 $(".whiteChess").addClass("clickdisable");
                 playercolor = "blackplayer";
-
+                window.alert("sei il giocatore nerogiochi per secondo");
+                $(".blackChess").addClass("clickdisable");
             }
         },
         error: function () {
@@ -615,16 +612,17 @@ function refreshtable() {
             if (playercolor === "whiteplayer") {
                 if (responserefresh(response)) {
                     $(".whiteChess").removeClass("clickdisable");
-                    responserefresh(response);
-
                 }
             } else if (playercolor === "blackplayer") {
                 if (responserefresh(response)) {
                     $(".blackChess").removeClass("clickdisable");
-                    responserefresh(response);
-
                 }
             }
+            $(".box").each(function () {
+                if (!this.hasClass("withChess")) {
+                    this.removeClass("clickdisable");
+                }
+            });
         },
         error: function () {
             console.log("refresh Fallito");
@@ -633,46 +631,114 @@ function refreshtable() {
 }
 
 function responserefresh(response) {
-
     var lockunlok = response.split(" ");
     if (lockunlok[0] === "lock") {
         return false;
     } else if (lockunlok[0] === "unlock") {
+        parsemovement(response);
         return true;
     }
 }
 
 function parsemovement(response) {
-    var arrayresponse = response.split(" ");
-    var i;
-    for (i = 0; i < (arrayresponse.length + 1); i++) {
-        if (arrayresponse[i].indexOf("class") >= 0 | arrayresponse[i].indexOf("pawn") >= 0 | arrayresponse[i].indexOf("rook") >= 0 | arrayresponse[i].indexOf("knight") >= 0 |
-            arrayresponse[i].indexOf("bishop") >= 0 | arrayresponse[i].indexOf("king") >= 0 | arrayresponse[i].indexOf("queen") >= 0 | arrayresponse[i].indexOf("selected") >= 0 |
-            arrayresponse[i].indexOf("withChess") >= 0 | arrayresponse[i].indexOf("whiteChess") >= 0 | arrayresponse[i].indexOf("blackChess") >= 0 | arrayresponse[i].indexOf("move") >= 0 |
-            arrayresponse[i].indexOf("edibile") >= 0 | arrayresponse[i].indexOf("clickdisable") >= 0) {
-            classes = classes + arrayresponse[i] + " ";
-      
-        }
-        if (arrayresponse[i].indexOf("id") >= 0) {
-            var b;
-            for (b = 0; b < arrayresponse[i].length; i++) {
-                id = id + arrayresponse[i][b];
-            }
-          
-        }
-        if (arrayresponse[i].indexOf("style") >= 0 | arrayresponse[1].indexOf("#") >= 0) {
-            style = style + arrayresponse[i];
-        }
-        
-        }
-    i = 1;
-    responserefresh(response);
-    console.log(id);
-    console.log(classes);
-    var arrayclas = classes.split(" ");
-    $("#" + id).addclass("box");
-    for (i = 1; i < (arrayclas.length + 1); i++) {
-        $("#" + id).addclass(arrayclas[i]);
-    }
+    var arrayresponse = response.split("\r\n");
+    var firsDiv = arrayresponse[0];
+    var secondDiv = arrayresponse[1];
 
+    creatediv(firsDiv);
+    creatediv(secondDiv);
 }
+
+function creatediv(stringdiv) {
+    var stringarray = stringdiv.split("|");
+    for (i = 0; i < (stringarray.length); i++) {
+        if (stringarray[i].includes("box")) {
+            if (stringarray[i].includes("box-")) {
+                id = stringarray[i];
+            } else if (stringarray[i].includes("box")) {
+                classes = stringarray[i];
+            }
+
+        }
+
+        if (stringarray[i].includes("background-color")) {
+            style = stringarray[i].split(" ");
+
+        }
+    }
+    $("#" + id).removeClass("selected withChess whiteChess blackChess move pawn rook knight bishop queen king edibile");
+    $("#" + id).addClass(classes);
+    $("#" + id).css("background-color", style[1]);
+    insertpezzo(id);
+}
+
+function insertpezzo(id) {
+    if (!$("#" + id).hasClass("withChess")) $("#" + id).html("");
+    if ($("#" + id).hasClass("withChess")) {
+        var classblock = $("#" + id);
+        var classblocklist = classblock[0].classList;
+
+        if ($("#" + id).hasClass("whiteChess")) {
+            console.log(classblocklist[1]);
+            switch (recognizepiece(id)) {
+                case "pawn":
+                    $("#" + id).html(chessPieces.white.pawn);
+                    break;
+                case "rook":
+                    $("#" + id).html(chessPieces.white.rook);
+                    break;
+                case "knight":
+                    $("#" + id).html(chessPieces.white.knight);
+                    break;
+                case "bishop":
+                    $("#" + id).html(chessPieces.white.bishop);
+                    break;
+                case "king":
+                    $("#" + id).html(chessPieces.white.king);
+                    break;
+                case "queen":
+                    $("#" + id).html(chessPieces.white.queen);
+                    break;
+            }
+        }
+        else if ($("#" + id).hasClass("blackChess")) {
+            switch (recognizepiece(id)) {
+                case "pawn":
+                    $("#" + id).html(chessPieces.black.pawn);
+                    break;
+                case "rook":
+                    $("#" + id).html(chessPieces.black.rook);
+                    break;
+                case "knight":
+                    $("#" + id).html(chessPieces.black.knight);
+                    break;
+                case "bishop":
+                    $("#" + id).html(chessPieces.black.bishop);
+                    break;
+                case "king":
+                    $("#" + id).html(chessPieces.black.king);
+                    break;
+                case "queen":
+                    $("#" + id).html(chessPieces.black.queen);
+                    break;
+            }
+        }
+    }
+}
+
+function recognizepiece(id) {
+    if ($("#" + id).hasClass("pawn")) {
+        return "pawn";
+    } else if ($("#" + id).hasClass("rook")) {
+        return "rook";
+    } else if ($("#" + id).hasClass("knight")) {
+        return "knight";
+    } else if ($("#" + id).hasClass("bishop")) {
+        return "pabishopwn";
+    } else if ($("#" + id).hasClass("queen")) {
+        return "queen";
+    } else if ($("#" + id).hasClass("king")) {
+        return "king";
+    }
+}
+

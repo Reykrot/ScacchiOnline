@@ -197,6 +197,18 @@ namespace ServerScacchi.Manager
                 if (count < 4) { count++; continue; }
                 response = response + item + " ";
             }
+            StringBuilder builder = new StringBuilder();
+            foreach (char specialchar in RespToServer)
+            {
+                char toadd = specialchar;
+                if (specialchar == '<' | specialchar == '>' | specialchar == '=' | specialchar == '"' | specialchar == '/')
+                {
+                    toadd = '|';
+                }
+                builder.Append(toadd);
+
+            }
+            response = builder.ToString();
             return response;
         }
 
@@ -236,10 +248,12 @@ namespace ServerScacchi.Manager
                         if (player.Color == "whiteplayer")
                         {
                             response = ToWhitePlayer;
+                            if (response == null) return "";
                         }
                         else if (player.Color == "blackplayer")
                         {
                             response = ToBlackPlayer;
+                            if (response == null) return "";
                         }
                     }
                 }

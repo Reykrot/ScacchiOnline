@@ -89,7 +89,7 @@ namespace ClientScacchi.Controllers
                             userClient.Token = respfromServer;
                             //  UserClient.UserPlayer.Add(userClient);
                             CookieOptions options = new CookieOptions();
-                            options.Expires = DateTime.Now.AddMinutes(5);
+                            options.Expires = DateTime.Now.AddMinutes(30);
                             options.IsEssential = true;
                             Response.Cookies.Append("token", userClient.Token, options);
 
